@@ -40,10 +40,10 @@ const Landing = ({navigation}) => {
   
         <View style={styles.buttonContainer} className="flex flex-row justify-evenly">
           <TouchableOpacity style={{ backgroundColor: '#45B3CB', padding: 13, borderRadius: 4 }} onPress={()=>
-            navigation.navigate('Form')}>
+            navigation.navigate('Form Biodata Ibu Hamil')}>
             <Text style={{ color: '#fff', fontFamily: "Poppins_SemiBold" }}>Ibu Hamil</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: '#45B3CB', padding: 13, borderRadius: 4 }} className="px-6">
+          <TouchableOpacity style={{ backgroundColor: '#45B3CB', padding: 13, borderRadius: 4 }} className="px-6" onPress={()=> navigation.navigate('Form Biodata Anak')}>
             <Text style={{ color: '#fff', fontFamily: "Poppins_SemiBold" }}>Anak</Text>
           </TouchableOpacity>
         </View>

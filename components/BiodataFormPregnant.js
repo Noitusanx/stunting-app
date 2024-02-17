@@ -1,13 +1,33 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, TouchableOpacity, ImageBackground, Platform, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView } from "react-native";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-const FormDataPribadi = ({ navigation, route }) => {
+
+const BiodataFormPregnant = ({ navigation }) => {
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const [name, onChangeName] = React.useState('');
-  const [dateBirth, onChangeDateBirth] = React.useState('');
   const [address, onChangeAddress] = React.useState('');
+  const [dateBirth, onChangeDateBirth] = React.useState('');
   const [age, onChangeAge] = React.useState('');
   const [childTo, onChangeChildTo] = React.useState('');
   const [pregnancyAge, onChangepregnancyAge] = React.useState('');
+
+  const showDatepicker = () => {
+    setShowDatePicker(true);
+};
+
+const onChange = (event, selectedDate) => {
+if (event.type === 'dismissed') {
+  setShowDatePicker(false);
+} else {
+  const currentDate = selectedDate || date;
+  setShowDatePicker(Platform.OS === 'android');
+  setDate(currentDate);
+  onChangeDateBirth(currentDate.toLocaleDateString());
+}
+};
 
   return (
     <KeyboardAvoidingView
@@ -21,15 +41,31 @@ const FormDataPribadi = ({ navigation, route }) => {
             <View style={{ alignItems: 'center' }}>
                 <Text style={{ fontFamily: 'Poppins_Bold' }} className="text-center text-xl mb-8 text-[#45B3CB]">Masukan Biodata Ibu Hamil</Text>
             </View>
-
             <View>
               <View style={styles.formContainer}>
                 <TextInput onChangeText={onChangeName} value={name} style={{ ...styles.input, fontFamily: "Poppins_Regular" }} placeholder="Nama Ibu" className="rounded-md border-[#C0C0C0]" />
-                <TextInput onChangeText={onChangeDateBirth} value={dateBirth} keyboardType="numeric" style={{ ...styles.input, fontFamily: "Poppins_Regular" }} className="rounded-md border-[#C0C0C0]" placeholder="Tanggal Lahir" />
+                <TouchableOpacity onPress={showDatepicker} style={{ ...styles.input, fontFamily: "Poppins_Regular", justifyContent: 'center', alignItems: 'flex-start' }} className="rounded-md border-[#C0C0C0]">
+                {!dateBirth ? (
+                    <Text style={{ color: '#555', fontFamily: 'Poppins_Regular' }}>Tanggal Lahir</Text>
+                ) : (
+                    <Text style={{ color: '#000', fontFamily: 'Poppins_Regular' }}>{dateBirth}</Text>
+                )}
+                </TouchableOpacity>
+                {showDatePicker && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode="date"
+                    is24Hour={true}
+                    display="calendar"
+                    onChange={onChange}
+                    placeholderText="Tanggal Lahir"
+                />
+                )}
                 <TextInput onChangeText={onChangeAddress} value={address} style={{ ...styles.input, fontFamily: "Poppins_Regular" }} placeholder="Alamat" className="rounded-md border-[#C0C0C0]" />
                 <TextInput onChangeText={onChangeAge} value={age} style={{ ...styles.input, fontFamily: "Poppins_Regular" }} className="rounded-md border-[#C0C0C0]" placeholder="Umur Kelahiran" />
-                <TextInput onChangeText={onChangeChildTo} value={childTo} style={{ ...styles.input, fontFamily: "Poppins_Regular" }} className="rounded-md border-[#C0C0C0]" placeholder="Anak Ke-" />
-                <TextInput onChangeText={onChangepregnancyAge} value={pregnancyAge} style={{ ...styles.input, fontFamily: "Poppins_Regular" }} className="rounded-md border-[#C0C0C0]" placeholder="Usia Kehamilan" />
+                <TextInput onChangeText={onChangeChildTo} value={childTo} style={{ ...styles.input, fontFamily: "Poppins_Regular" }} className="rounded-md border-[#C0C0C0]" placeholder="Anak Ke-" keyboardType="numeric"/>
+                <TextInput onChangeText={onChangepregnancyAge} value={pregnancyAge} style={{ ...styles.input, fontFamily: "Poppins_Regular" }} className="rounded-md border-[#C0C0C0]" placeholder="Usia Kehamilan" keyboardType="numeric" />
                 <TouchableOpacity style={{ backgroundColor: '#45B3CB', paddingVertical: 15, borderRadius: 10 }} className=" mt-5 w-[300]">
                     <Text style={{ color: '#fff', fontFamily: "Poppins_SemiBold" }} className="text-center">Submit</Text>
                 </TouchableOpacity>
@@ -83,4 +119,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormDataPribadi;
+export default BiodataFormPregnant;
